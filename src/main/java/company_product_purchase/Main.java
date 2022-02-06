@@ -4,10 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println();
+        Utilities utilities = new Utilities();
 
         Product productFiat = new Product("Fiat Fullback", 82000);
         Product productSkoda = new Product("Skoda Octavia", 45000);
@@ -458,6 +460,28 @@ public class Main {
         System.out.println();
         System.out.println("Zad. 1");
         zad_1_wylistujWszystkieFirmy(companies);
+
+        System.out.println();
+        System.out.println("Zad. 2");
+        utilities.zad_2_wylistujFirmyZDetroit(companies);
+
+        System.out.println();
+        System.out.println("Zad. 3");
+        utilities.zad_3_wylistujFirmyZLondynuIPosortujRosnacoPoIlosciPracownikow(companies);
+
+        System.out.println();
+        System.out.println("Zad. 4");
+        utilities.zad_4_wylistujFirmyZWarszawyPosortujRosnacoPoIlosciZakupowIMalejacoPoIlosciPracownikow(companies);
+
+        System.out.println();
+        System.out.println("Zad. 5");
+        Optional<Company> zad_5 = utilities.zad_5_firmaZKijowaZNajwiekszaIlosciaPracownikow(companies);
+        if (zad_5.isPresent()) {
+            Company company_zad_5 = zad_5.get();
+            System.out.println(company_zad_5.getName() + " - " + company_zad_5.getCityHeadquarters()
+            + " - " + company_zad_5.getEmployees());
+        }
+
 
 // Polecenie 1:
 // Dane to Firmy oraz ich zakupy z miesiąca styczeń/luty 2018.

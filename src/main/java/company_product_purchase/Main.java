@@ -1,10 +1,7 @@
 package company_product_purchase;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -482,6 +479,30 @@ public class Main {
             + " - " + company_zad_5.getEmployees());
         }
 
+        System.out.println();
+        System.out.println("Zad. 6");
+        Optional<Company> opt_zad_6 =  utilities.zad_6_firmaZNajkrotszaNazwa(companies);
+        if (opt_zad_6.isPresent()) {
+            Company zad_6 = opt_zad_6.get();
+            System.out.println(zad_6.getName());
+        }
+
+        System.out.println();
+        System.out.println("Zad. 7");
+        Optional<Company> opt_zad_7 =  utilities.zad_7_firmaNieKijevLondonDetroitZNajmniejszaIlosciaKupionychProduktow(companies);
+        if (opt_zad_7.isPresent()) {
+            Company zad_7 = opt_zad_7.get();
+            System.out.println(zad_7.getName());
+        }
+
+        System.out.println();
+        System.out.println("Zad. 8");
+        utilities.zad_8_firmieZKijevIDetroitdodaj1Pracownika(companies);
+
+        System.out.println();
+        System.out.println("Zad. 9");
+        Map<String, Integer> zad_9 = utilities.zad_9_zwrocMapeKNazwaFirmyVIloscPracownikow(companies);
+        zad_9.forEach((k, v) -> System.out.println(k + " - " + v));
 
 // Polecenie 1:
 // Dane to Firmy oraz ich zakupy z miesiąca styczeń/luty 2018.
@@ -534,7 +555,7 @@ public class Main {
 
     // 1. Wylistuj (system out println) wszystkie firmy
     private static void zad_1_wylistujWszystkieFirmy(List<Company> companies) {
-        companies.forEach(company -> System.out.println(company.getName() + " - " + company.getCityHeadquarters()));
+        companies.forEach(company -> System.out.println(company.getName() + " - " + company.getCityHeadquarters() + " - " + company.getPurchaseList().size()));
     }
 
 

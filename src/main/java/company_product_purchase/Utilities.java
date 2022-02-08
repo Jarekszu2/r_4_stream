@@ -86,4 +86,24 @@ class Utilities {
         return companies.stream()
                 .collect(Collectors.toMap(Company::getName, Company::getEmployees));
     }
+
+    Map<String, Integer> zad_9_2_zwrocMapeKNazwaFirmyVIloscPracownikow(List<Company> companies) {
+
+        Map<String, List<Company>> map = companies.stream()
+                .collect(Collectors.groupingBy(Company::getCityHeadquarters, Collectors.toList()));
+
+        return map.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, o -> o.getValue().stream().mapToInt(Company::getEmployees).sum()));
+    }
+
+    // 10.** Zwróć Mapę w której kluczem jest miejscowość a wartością jest LISTA FIRM z tamtej miejscowości (Map<String, List<Company>) (https://stackoverflow.com/questions/24917053/collecting-hashmapstring-liststring-java-8)
+    Map<String, List<Company>> zad_10_mapaMiejscowoscListaFirmZTejMiejscowosci(List<Company> companies) {
+        return companies.stream()
+                .collect(Collectors.groupingBy(Company::getCityHeadquarters));
+    }
+
+    Map<String, List<Company>> zad_10_2_mapaMiejscowoscListaFirmZTejMiejscowosci(List<Company> companies) {
+        return companies.stream()
+                .collect(Collectors.groupingBy(Company::getCityHeadquarters, Collectors.toList()));
+    }
 }

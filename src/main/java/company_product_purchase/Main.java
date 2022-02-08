@@ -504,6 +504,26 @@ public class Main {
         Map<String, Integer> zad_9 = utilities.zad_9_zwrocMapeKNazwaFirmyVIloscPracownikow(companies);
         zad_9.forEach((k, v) -> System.out.println(k + " - " + v));
 
+        System.out.println();
+        System.out.println("Zad. 9/2");
+        Map<String, Integer> zad_9_2 = utilities.zad_9_2_zwrocMapeKNazwaFirmyVIloscPracownikow(companies);
+        for (Map.Entry<String, Integer> entry : zad_9_2.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println(key + " - " + value);
+        }
+
+
+        System.out.println();
+        System.out.println("Zad. 10");
+        Map<String, List<Company>> zad_10 = utilities.zad_10_mapaMiejscowoscListaFirmZTejMiejscowosci(companies);
+        zad_10.forEach((k, v) -> System.out.println(k + " - " + v.size()));
+
+        System.out.println();
+        System.out.println("Zad. 10/2");
+        Map<String, List<Company>> zad_10_2 = utilities.zad_10_2_mapaMiejscowoscListaFirmZTejMiejscowosci(companies);
+        zad_10_2.forEach((k, v) -> System.out.println(k + " - " + v.size()));
+
 // Polecenie 1:
 // Dane to Firmy oraz ich zakupy z miesiąca styczeń/luty 2018.
 

@@ -1,9 +1,7 @@
 package company_product_purchase;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 class Utilities {
@@ -106,4 +104,89 @@ class Utilities {
         return companies.stream()
                 .collect(Collectors.groupingBy(Company::getCityHeadquarters, Collectors.toList()));
     }
+
+    // 11. Zwróć firmę która dokonała zakupów na największą kwotę
+    Optional<Company> zad_11_firmKtoraDokonalaZakupowNaNajwiekszaKwote(List<Company> companies) {
+        return companies.stream()
+                .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream()
+                .mapToDouble(value1 -> value1.getProduct().getPrice() * value1.getQuantity()).sum()));
+
+    }
+
+    // 12. Zwróć firmę która kupiła najwięcej produktów za kwotę wyższą niż 10 k
+    Optional<Company> zad_12_firmaKtoraKupilaNajwiecejProduktowZaKwoteWiekszaNiz10k(List<Company> companies) {
+        return companies.stream()
+                .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream()
+                .filter(purchase -> purchase.getProduct().getPrice() > 10000)
+                .mapToDouble(Purchase::getQuantity).sum()));
+    }
+
+    // 13. *Zwróć miejscowość która wydała najwięcej pieniędzy. Stwórz mapę Map<String, Double> gdzie kluczem jest miejscowość, a wartością jest kwota wydana przez firmy pochodzące z tamtej miejscowości
+    Map<String, Double> zad_13_stworzMapeNazwaMiejscowosciKwotaWydanaPrzezFirmyZTejMiejscowosci(List<Company> companies) {
+        Set<String> stringSet = companies.stream()
+                .map(Company::getCityHeadquarters).collect(Collectors.toSet());
+
+        return stringSet.stream().collect(Collectors.toMap(
+                        o -> o,
+                        o -> companies.stream()
+                             .filter(company -> company.getCityHeadquarters().equals(o))
+                             .mapToDouble(value -> value.getPurchaseList().stream()
+                             .mapToDouble(value1 -> value1.getQuantity() * value1.getProduct().getPrice())
+                             .sum())
+                             .sum()
+        ));
+    }
+
+    // 14. Wypisz firmy które 15 stycznia 2018 kupiły "Network Switch"
+    void zad_14_wypiszFirmyKtoreKupily15Stycznia2018NetworkSwitch(List<Company> companies) {
+        companies.stream()
+                .filter(company -> company.getPurchaseList().stream()
+                .anyMatch(purchase -> purchase.getPurchaseDate().isEqual(LocalDate.of(2018, 1, 15)) && purchase.getProduct().getName().equals("Network Switch")))
+                .forEach(company -> System.out.println(company.getName()));
+    }
+
+    // 15. Znajdź firmę która kupuje najwięcej kawy
+    Optional<Company> zad_15_firmaKtoraKupujeNajwiecejKawy(List<Company> companies) {
+        return companies.stream()
+                .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream()
+                .filter(purchase -> purchase.getProduct().getName().startsWith("Coff"))
+                .mapToDouble(Purchase::getQuantity)
+                .sum()));
+    }
+
+    // 16. Wypisz ile łącznie zostało kupionej kawy Arabica w miesiącu styczniu
+    double zad_16_zakupKawyArabicaWStyczniu(List<Company> companies) {
+        return companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream()
+                .filter(purchase -> purchase.getProduct().getName().equals("Coffe, Arabica")
+                && purchase.getPurchaseDate().getMonth().getValue() == 1))
+                .mapToDouble(Purchase::getQuantity).sum();
+    }
+
+    // 17. Wypisz ile łącznie kawy (Arabica i Roubsta) zostało kupionej w dni parzyste.
+    double zad_17_ileRazemKawyArabicaIRobustaKupionoWDniParzyste(List<Company> companies) {
+        return companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream()
+                .filter(purchase -> purchase.getProduct().getName().startsWith("Coff")
+                && (purchase.getPurchaseDate().getDayOfMonth() % 2) == 0))
+                .mapToDouble(Purchase::getQuantity).sum();
+    }
+
+    // 18. Zwróć Mapę (Map<Product, Set<Company>>) w której kluczem jest typ kawy (powinny być dwie, Arabica i Robusta) i wartością są listy firm które kupiły podaną kawę chociaż raz.
+    Map<Product, Set<Company>> zad_18_mapaTypKawySetFirmKupujacychKaweChocRaz(List<Company> companies) {
+        Set<Product> products = companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream()
+                .map(Purchase::getProduct)
+                .filter(product -> product.getName().startsWith("Coff")))
+                .collect(Collectors.toSet());
+
+        return products.stream().collect(Collectors.toMap(
+                o -> o,
+                o -> companies.stream()
+                    .filter(company -> company.getPurchaseList().stream()
+                    .anyMatch(purchase -> purchase.getProduct().getName().startsWith("Coff")))
+                    .collect(Collectors.toSet())));
+
+    }
+
 }

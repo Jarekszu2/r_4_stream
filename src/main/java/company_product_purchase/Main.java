@@ -524,6 +524,72 @@ public class Main {
         Map<String, List<Company>> zad_10_2 = utilities.zad_10_2_mapaMiejscowoscListaFirmZTejMiejscowosci(companies);
         zad_10_2.forEach((k, v) -> System.out.println(k + " - " + v.size()));
 
+        System.out.println();
+        System.out.println("Zad. 11");
+        Optional<Company> opt_zad_11 = utilities.zad_11_firmKtoraDokonalaZakupowNaNajwiekszaKwote(companies);
+        if (opt_zad_11.isPresent()) {
+            Company zad_11_comp = opt_zad_11.get();
+            System.out.println(zad_11_comp.getName() + " - " + zad_11_comp.getCityHeadquarters());
+        }
+
+        System.out.println();
+        System.out.println("Zad. 12");
+        Optional<Company> opt_zad_12 = utilities.zad_11_firmKtoraDokonalaZakupowNaNajwiekszaKwote(companies);
+        if (opt_zad_12.isPresent()) {
+            Company zad_12_comp = opt_zad_12.get();
+            System.out.println(zad_12_comp.getName() + " - " + zad_12_comp.getCityHeadquarters());
+        }
+
+        System.out.println();
+        System.out.println("Zad. 13");
+        Map<String, Double> map_zad_13 = utilities.zad_13_stworzMapeNazwaMiejscowosciKwotaWydanaPrzezFirmyZTejMiejscowosci(companies);
+        map_zad_13.forEach((k, v) -> System.out.println(k + " - " + v));
+
+        Set<Map.Entry<String, Double>> entrySet = map_zad_13.entrySet();
+        OptionalDouble opt_zad_13 = entrySet.stream()
+                .mapToDouble(Map.Entry::getValue)
+                .max();
+
+        System.out.println();
+        if (opt_zad_13.isPresent()) {
+            System.out.println(opt_zad_13.getAsDouble());
+
+            for (Map.Entry<String, Double> stringDoubleEntry : entrySet) {
+                if (stringDoubleEntry.getValue() == opt_zad_13.getAsDouble()) {
+                    System.out.println(stringDoubleEntry.getKey() + " - " + stringDoubleEntry.getValue());
+                }
+            }
+        }
+
+        System.out.println();
+        Optional<Double> opt_zad_13_2 = map_zad_13.values().stream()
+                .max(Double::compareTo);
+        opt_zad_13_2.ifPresent(System.out::println);
+
+        System.out.println();
+        System.out.println("Zad. 14");
+        utilities.zad_14_wypiszFirmyKtoreKupily15Stycznia2018NetworkSwitch(companies);
+
+        System.out.println();
+        System.out.println("Zad. 15");
+        Optional<Company> opt_zad_15 = utilities.zad_15_firmaKtoraKupujeNajwiecejKawy(companies);
+        opt_zad_15.ifPresent(company -> System.out.println(company.getName()));
+
+        System.out.println();
+        System.out.println("Zad. 16");
+        System.out.println(utilities.zad_16_zakupKawyArabicaWStyczniu(companies));
+
+        System.out.println();
+        System.out.println("Zad. 17");
+        System.out.println(utilities.zad_17_ileRazemKawyArabicaIRobustaKupionoWDniParzyste(companies));
+
+        System.out.println();
+        System.out.println("Zad. 18");
+        Map<Product, Set<Company>> map_zad_18 = utilities.zad_18_mapaTypKawySetFirmKupujacychKaweChocRaz(companies);
+        map_zad_18.forEach((k, v) -> System.out.println(k + " - " + v.size()));
+
+
+
 // Polecenie 1:
 // Dane to Firmy oraz ich zakupy z miesiąca styczeń/luty 2018.
 

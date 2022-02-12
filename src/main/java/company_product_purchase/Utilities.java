@@ -34,9 +34,9 @@ class Utilities {
                     }
                     return Integer.compare(o2.getEmployees(), o1.getEmployees());
                 })
-                .forEach(company -> System.out.println(company.getName()+ " - "
-                + company.getCityHeadquarters() + " - " + company.getPurchaseList().size()
-                + " - " + company.getEmployees()));
+                .forEach(company -> System.out.println(company.getName() + " - "
+                        + company.getCityHeadquarters() + " - " + company.getPurchaseList().size()
+                        + " - " + company.getEmployees()));
     }
 
     // 5. Zwróć firmę z największą ilością pracowników, która pochodzi z Kijowa.
@@ -109,7 +109,7 @@ class Utilities {
     Optional<Company> zad_11_firmKtoraDokonalaZakupowNaNajwiekszaKwote(List<Company> companies) {
         return companies.stream()
                 .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream()
-                .mapToDouble(value1 -> value1.getProduct().getPrice() * value1.getQuantity()).sum()));
+                        .mapToDouble(value1 -> value1.getProduct().getPrice() * value1.getQuantity()).sum()));
 
     }
 
@@ -117,8 +117,8 @@ class Utilities {
     Optional<Company> zad_12_firmaKtoraKupilaNajwiecejProduktowZaKwoteWiekszaNiz10k(List<Company> companies) {
         return companies.stream()
                 .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream()
-                .filter(purchase -> purchase.getProduct().getPrice() > 10000)
-                .mapToDouble(Purchase::getQuantity).sum()));
+                        .filter(purchase -> purchase.getProduct().getPrice() > 10000)
+                        .mapToDouble(Purchase::getQuantity).sum()));
     }
 
     // 13. *Zwróć miejscowość która wydała najwięcej pieniędzy. Stwórz mapę Map<String, Double> gdzie kluczem jest miejscowość, a wartością jest kwota wydana przez firmy pochodzące z tamtej miejscowości
@@ -127,13 +127,13 @@ class Utilities {
                 .map(Company::getCityHeadquarters).collect(Collectors.toSet());
 
         return stringSet.stream().collect(Collectors.toMap(
-                        o -> o,
-                        o -> companies.stream()
-                             .filter(company -> company.getCityHeadquarters().equals(o))
-                             .mapToDouble(value -> value.getPurchaseList().stream()
-                             .mapToDouble(value1 -> value1.getQuantity() * value1.getProduct().getPrice())
-                             .sum())
-                             .sum()
+                o -> o,
+                o -> companies.stream()
+                        .filter(company -> company.getCityHeadquarters().equals(o))
+                        .mapToDouble(value -> value.getPurchaseList().stream()
+                                .mapToDouble(value1 -> value1.getQuantity() * value1.getProduct().getPrice())
+                                .sum())
+                        .sum()
         ));
     }
 
@@ -141,7 +141,7 @@ class Utilities {
     void zad_14_wypiszFirmyKtoreKupily15Stycznia2018NetworkSwitch(List<Company> companies) {
         companies.stream()
                 .filter(company -> company.getPurchaseList().stream()
-                .anyMatch(purchase -> purchase.getPurchaseDate().isEqual(LocalDate.of(2018, 1, 15)) && purchase.getProduct().getName().equals("Network Switch")))
+                        .anyMatch(purchase -> purchase.getPurchaseDate().isEqual(LocalDate.of(2018, 1, 15)) && purchase.getProduct().getName().equals("Network Switch")))
                 .forEach(company -> System.out.println(company.getName()));
     }
 
@@ -149,17 +149,17 @@ class Utilities {
     Optional<Company> zad_15_firmaKtoraKupujeNajwiecejKawy(List<Company> companies) {
         return companies.stream()
                 .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream()
-                .filter(purchase -> purchase.getProduct().getName().startsWith("Coff"))
-                .mapToDouble(Purchase::getQuantity)
-                .sum()));
+                        .filter(purchase -> purchase.getProduct().getName().startsWith("Coff"))
+                        .mapToDouble(Purchase::getQuantity)
+                        .sum()));
     }
 
     // 16. Wypisz ile łącznie zostało kupionej kawy Arabica w miesiącu styczniu
     double zad_16_zakupKawyArabicaWStyczniu(List<Company> companies) {
         return companies.stream()
                 .flatMap(company -> company.getPurchaseList().stream()
-                .filter(purchase -> purchase.getProduct().getName().equals("Coffe, Arabica")
-                && purchase.getPurchaseDate().getMonth().getValue() == 1))
+                        .filter(purchase -> purchase.getProduct().getName().equals("Coffe, Arabica")
+                                && purchase.getPurchaseDate().getMonth().getValue() == 1))
                 .mapToDouble(Purchase::getQuantity).sum();
     }
 
@@ -167,8 +167,8 @@ class Utilities {
     double zad_17_ileRazemKawyArabicaIRobustaKupionoWDniParzyste(List<Company> companies) {
         return companies.stream()
                 .flatMap(company -> company.getPurchaseList().stream()
-                .filter(purchase -> purchase.getProduct().getName().startsWith("Coff")
-                && (purchase.getPurchaseDate().getDayOfMonth() % 2) == 0))
+                        .filter(purchase -> purchase.getProduct().getName().startsWith("Coff")
+                                && (purchase.getPurchaseDate().getDayOfMonth() % 2) == 0))
                 .mapToDouble(Purchase::getQuantity).sum();
     }
 
@@ -176,17 +176,83 @@ class Utilities {
     Map<Product, Set<Company>> zad_18_mapaTypKawySetFirmKupujacychKaweChocRaz(List<Company> companies) {
         Set<Product> products = companies.stream()
                 .flatMap(company -> company.getPurchaseList().stream()
-                .map(Purchase::getProduct)
-                .filter(product -> product.getName().startsWith("Coff")))
+                        .map(Purchase::getProduct)
+                        .filter(product -> product.getName().startsWith("Coff")))
                 .collect(Collectors.toSet());
 
         return products.stream().collect(Collectors.toMap(
                 o -> o,
                 o -> companies.stream()
-                    .filter(company -> company.getPurchaseList().stream()
-                    .anyMatch(purchase -> purchase.getProduct().getName().startsWith("Coff")))
-                    .collect(Collectors.toSet())));
+                        .filter(company -> company.getPurchaseList().stream()
+                                .anyMatch(purchase -> purchase.getProduct().getName().startsWith("Coff")))
+                        .collect(Collectors.toSet())));
 
     }
 
+    // 19. Zwróć firmę która w styczniu kupiła najwięcej paliwa (ropy)
+    Optional<Company> zad_19_bad_firmaKtoraWStyczniuKupilaNajwiecejPaliwaRopy(List<Company> companies) {
+        return companies.stream()
+                .filter(company -> company.getPurchaseList().stream()
+                        .anyMatch(purchase -> purchase.getProduct().getName().equals("Fuel, oil")
+                                && purchase.getPurchaseDate().getMonthValue() == 1))
+                .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream().mapToDouble(Purchase::getQuantity).sum()));
+    }
+
+    Optional<Company> zad_19_firmaKtoraWStyczniuKupilaNajwiecejPaliwaRopy(List<Company> companies) {
+        return companies.stream()
+                .max(Comparator.comparingDouble(
+                        value -> value.getPurchaseList().stream()
+                                .filter(purchase -> purchase.getProduct().getName().equals("Fuel, oil")
+                                        && purchase.getPurchaseDate().getMonthValue() == 1)
+                                .mapToDouble(Purchase::getQuantity).sum()
+                ));
+    }
+
+    // 20. Zwróć firmę której proporcja wydanych pieniędzy do ilości pracowników jest najwyższa
+    Optional<Company> zad_20_firmaOnajwiekszejProporcjiWydanychPienedzyDoIlosciPracownikow(List<Company> companies) {
+        return companies.stream()
+                .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream()
+                        .mapToDouble(purchase -> purchase.getQuantity() * purchase.getProduct().getPrice()).sum() / value.getEmployees()));
+    }
+
+    // 21. Zwróć firmę która najwięcej wydaje na artykuły biurowe
+    Optional<Company> zad_21_firmaKtoraNajwiecejWydajeNaArtykulyBiurowe(List<Company> companies) {
+        return companies.stream()
+                .max(Comparator.comparingDouble(
+                        value -> value.getPurchaseList().stream()
+                                .filter(purchase -> purchase.getProduct().getName().equals("Pen")
+                                        || purchase.getProduct().getName().equals("Pencil")
+                                        || purchase.getProduct().getName().equals("Clip")
+                                        || purchase.getProduct().getName().equals("Puncher")
+                                        || purchase.getProduct().getName().equals("Paper")
+                                        || purchase.getProduct().getName().equals("Paper"))
+                                .mapToDouble(value1 -> value1.getProduct().getPrice() * value1.getQuantity()).sum()
+                ));
+    }
+
+    // 22. Zwróć firmy posortowane po ilości wydanych pieniędzy na paliwo (wydruk oraz mapa Map<Company, Double>
+
+    void zad_22_A_firmyPosortowanePoIlosciWydanychPieniedzyNaPaliwo(List<Company> companies) {
+        companies.stream()
+                .sorted(Comparator.comparingDouble(
+                        value -> value.getPurchaseList().stream()
+                                .filter(purchase -> purchase.getProduct().getName().startsWith("Fuel"))
+                                .mapToDouble(value1 -> value1.getProduct().getPrice() * value1.getQuantity()).sum()
+                )).forEach(company -> System.out.println(company.getName() + " - " + company.getCityHeadquarters()));
+    }
+
+    Map<Company, Double> zad_22_B_firmyPosortowanePoIlosciWydanychPieniedzyNaPaliwo(List<Company> companies) {
+        return companies.stream()
+                .collect(Collectors.toMap(
+                        c -> c,
+                        c -> c.getPurchaseList()
+                            .stream()
+                            .filter(purchase -> purchase.getProduct().getName().startsWith("Fuel"))
+                            .mapToDouble(purchase -> purchase.getProduct().getPrice() * purchase.getQuantity()).sum()))
+                .entrySet()
+                .stream()
+//                .sorted(Map.Entry.comparingByValue())
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+    }
 }

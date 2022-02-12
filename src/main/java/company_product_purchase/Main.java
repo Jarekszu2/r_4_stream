@@ -588,6 +588,32 @@ public class Main {
         Map<Product, Set<Company>> map_zad_18 = utilities.zad_18_mapaTypKawySetFirmKupujacychKaweChocRaz(companies);
         map_zad_18.forEach((k, v) -> System.out.println(k + " - " + v.size()));
 
+        System.out.println();
+        System.out.println("Zad. 19");
+        Optional<Company> opt_zad_19_bad = utilities.zad_19_bad_firmaKtoraWStyczniuKupilaNajwiecejPaliwaRopy(companies);
+        opt_zad_19_bad.ifPresent(company -> System.out.println(company.getName() + " - " + company.getCityHeadquarters()));
+
+        System.out.println();
+        Optional<Company> opt_zad_19 = utilities.zad_19_firmaKtoraWStyczniuKupilaNajwiecejPaliwaRopy(companies);
+        opt_zad_19.ifPresent(company -> System.out.println(company.getName() + " - " + company.getCityHeadquarters()));
+
+        System.out.println();
+        System.out.println("Zad. 20");
+        Optional<Company> opt_zad_20 = utilities.zad_20_firmaOnajwiekszejProporcjiWydanychPienedzyDoIlosciPracownikow(companies);
+        opt_zad_20.ifPresent(company -> System.out.println(company.getName() + " - " + company.getCityHeadquarters()));
+
+        System.out.println();
+        System.out.println("Zad. 21");
+        Optional<Company> opt_zad_21 = utilities.zad_21_firmaKtoraNajwiecejWydajeNaArtykulyBiurowe(companies);
+        opt_zad_21.ifPresent(company -> System.out.println(company.getName() + " - " + company.getCityHeadquarters()));
+
+        System.out.println();
+        System.out.println("Zad. 22_A");
+        utilities.zad_22_A_firmyPosortowanePoIlosciWydanychPieniedzyNaPaliwo(companies);
+
+        System.out.println();
+        Map<Company, Double> zad_22_B = utilities.zad_22_B_firmyPosortowanePoIlosciWydanychPieniedzyNaPaliwo(companies);
+        zad_22_B.forEach((k, v) -> System.out.println(k.getName() + " - " + k.getCityHeadquarters() + " - " + v));
 
 
 // Polecenie 1:
@@ -615,7 +641,7 @@ public class Main {
 // 19. Zwróć firmę która w styczniu kupiła najwięcej paliwa (ropy)
 // 20. Zwróć firmę której proporcja wydanych pieniędzy do ilości pracowników jest najwyższa
 // 21. Zwróć firmę która najwięcej wydaje na artykuły biurowe
-// 22. Zwróć firmy posortowane po ilości wydanych pieniędzy na paliwo
+// 22. Zwróć firmy posortowane po ilości wydanych pieniędzy na paliwo (wydruk oraz mapa Map<Company, Double>
 // 23. Zwróć wszystkie produkty które kupione były na kilogramy
 // 24. Zwróć listę zakupów (obiektów purchase) kupionych przez firmy z Detroit w miesiącu lutym. posortuj je po kwocie.
 // 25. Zwróć ilość biur które wynajęte były w miesiącu lutym.

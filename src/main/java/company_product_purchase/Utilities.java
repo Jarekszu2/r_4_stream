@@ -77,13 +77,13 @@ class Utilities {
     }
 
     // 9. ** Zwróć MAPĘ w której kluczem jest nazwa firmy, a wartością ilość pracowników w tej firmie (https://howtodoinjava.com/java8/collect-stream-to-map/)
-    Map<String, Integer> zad_9_zwrocMapeKNazwaFirmyVIloscPracownikow(List<Company> companies) {
-
-        companies.forEach(company -> company.setName(company.getName().concat(" ").concat(company.getCityHeadquarters())));
-
-        return companies.stream()
-                .collect(Collectors.toMap(Company::getName, Company::getEmployees));
-    }
+//    Map<String, Integer> zad_9_zwrocMapeKNazwaFirmyVIloscPracownikow(List<Company> companies) {
+//
+//        companies.forEach(company -> company.setName(company.getName().concat(" ").concat(company.getCityHeadquarters())));
+//
+//        return companies.stream()
+//                .collect(Collectors.toMap(Company::getName, Company::getEmployees));
+//    }
 
     Map<String, Integer> zad_9_2_zwrocMapeKNazwaFirmyVIloscPracownikow(List<Company> companies) {
 
@@ -246,13 +246,102 @@ class Utilities {
                 .collect(Collectors.toMap(
                         c -> c,
                         c -> c.getPurchaseList()
-                            .stream()
-                            .filter(purchase -> purchase.getProduct().getName().startsWith("Fuel"))
-                            .mapToDouble(purchase -> purchase.getProduct().getPrice() * purchase.getQuantity()).sum()))
+                                .stream()
+                                .filter(purchase -> purchase.getProduct().getName().startsWith("Fuel"))
+                                .mapToDouble(purchase -> purchase.getProduct().getPrice() * purchase.getQuantity()).sum()))
                 .entrySet()
                 .stream()
 //                .sorted(Map.Entry.comparingByValue())
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+    }
+
+    // 23. Zwróć wszystkie produkty które kupione były na kilogramy
+    Set<Product> zad_23_produktyKupioneNaKilogramy(List<Company> companies) {
+        return companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream())
+                .filter(purchase -> purchase.getUnit().equals(UNIT.KILOGRAM))
+                .map(Purchase::getProduct)
+                .collect(Collectors.toSet());
+    }
+
+    // 24. Zwróć listę zakupów (obiektów purchase) kupionych przez firmy z Detroit w miesiącu lutym. posortuj je po kwocie.
+    List<Purchase> zad_24_zakupyKupionePrzezFirmyZDetroitWLutymPosortowanePoKwocie(List<Company> companies) {
+        return companies.stream()
+                .filter(company -> company.getCityHeadquarters().equals("Detroit"))
+                .flatMap(company -> company.getPurchaseList().stream())
+                .filter(purchase -> purchase.getPurchaseDate().getMonthValue() == 2)
+                .sorted(Comparator.comparingDouble(value -> value.getProduct().getPrice() * value.getQuantity()))
+                .collect(Collectors.toList());
+    }
+
+    // 25. Zwróć ilość biur które wynajęte były w miesiącu lutym.
+    double zad_25_iloscBiurWynajetychWLutym(List<Company> companies) {
+        return companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream())
+                .filter(purchase -> purchase.getProduct().getName().equals("Office rent")
+                        && purchase.getPurchaseDate().getMonthValue() == 2)
+                .mapToDouble(Purchase::getQuantity)
+                .sum();
+    }
+
+    // 26. Zwróć Mapę (Map<Company, Integer>). w mapie umieść wpisy Firma - > ilość biur które wynajęły w dowolnym okresie.
+    Map<Company, Double> zad_26_mapaFirmaIloscWynajetychBiur(List<Company> companies) {
+        return companies.stream()
+                .collect(Collectors.toMap(
+                        c -> c,
+                        c -> c.getPurchaseList().stream()
+                                .filter(purchase -> purchase.getProduct().getName().equals("Office rent"))
+                                .mapToDouble(Purchase::getQuantity)
+                                .sum()));
+    }
+
+    // 27. *Wypisz "Nazwa firmy: XYZ, ilość zakupionych telefonów apple: X" dla każdej firmy która kupiła telefon apple. Wypisy powinny być posortowane (na szczycie powinna być firma która kupiła ich najwięcej).
+    void zad_27_wypiszFirmyZamawiajaceTelefonyAppleOrazIlosciTychTelefonowPosortowaneMalejaco(List<Company> companies) {
+        Map<Company, Double> map = companies.stream()
+                .collect(Collectors.toMap(
+                        c -> c,
+                        c -> c.getPurchaseList().stream()
+                            .filter(purchase -> purchase.getProduct().getName().equals("Apple Phone"))
+                            .mapToDouble(Purchase::getQuantity)
+                            .sum()
+                )).entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+
+        map.forEach((k, v) -> System.out.println(k.getName() + " - " + v));
+
+        System.out.println();
+        Set<Map.Entry<Company, Double>> entrySet = map.entrySet();
+        for (Map.Entry<Company, Double> e : entrySet) {
+            if (e.getValue() != 0) {
+                System.out.println(e.getKey().getName() + " - " + e.getValue());
+            }
+        }
+    }
+
+    // 28. Znajdź firme która posiada siedzibę w więcej niż jednym mieście. Posortuj firmy po ilości siedzib, wypisz tylko te które mają więcej niż 1 siedzibę.
+    void zad_28_wypiszFirmyMajacesiedzibeWWiecejNizJednymMiesciePosortowanePoIlosciSiedzibGdyJestIchWiecejNiz1(List<Company> companies) {
+        Set<String> set = companies.stream()
+                .map(Company::getName)
+                .collect(Collectors.toSet());
+//        set.forEach(System.out::println);
+
+        Map<String, Integer> map = set.stream()
+                .collect(Collectors.toMap(
+                        s -> s,
+                        s -> (int) companies.stream().filter(company -> company.getName().equals(s)).count()))
+                .entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+//        System.out.println();
+//        map.forEach((k, v) -> System.out.println(k + " - " + v));
+
+        Set<Map.Entry<String, Integer>> entries = map.entrySet();
+        for (Map.Entry<String, Integer> e : entries) {
+            if (e.getValue() > 1) {
+                System.out.println(e.getKey() + " - " + e.getValue());
+            }
+        }
     }
 }

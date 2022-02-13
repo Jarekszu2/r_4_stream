@@ -501,8 +501,8 @@ public class Main {
 
         System.out.println();
         System.out.println("Zad. 9");
-        Map<String, Integer> zad_9 = utilities.zad_9_zwrocMapeKNazwaFirmyVIloscPracownikow(companies);
-        zad_9.forEach((k, v) -> System.out.println(k + " - " + v));
+//        Map<String, Integer> zad_9 = utilities.zad_9_zwrocMapeKNazwaFirmyVIloscPracownikow(companies);
+//        zad_9.forEach((k, v) -> System.out.println(k + " - " + v));
 
         System.out.println();
         System.out.println("Zad. 9/2");
@@ -615,6 +615,33 @@ public class Main {
         Map<Company, Double> zad_22_B = utilities.zad_22_B_firmyPosortowanePoIlosciWydanychPieniedzyNaPaliwo(companies);
         zad_22_B.forEach((k, v) -> System.out.println(k.getName() + " - " + k.getCityHeadquarters() + " - " + v));
 
+        System.out.println();
+        System.out.println("Zad. 23");
+        Set<Product> zad_23 = utilities.zad_23_produktyKupioneNaKilogramy(companies);
+        zad_23.forEach(System.out::println);
+
+        System.out.println();
+        System.out.println("Zad. 24");
+        List<Purchase> zad_24 = utilities.zad_24_zakupyKupionePrzezFirmyZDetroitWLutymPosortowanePoKwocie(companies);
+        zad_24.forEach(purchase -> System.out.println(purchase.getProduct().getName() + " - " + purchase.getProduct().getPrice() * purchase.getQuantity()));
+
+        System.out.println();
+        System.out.println("Zad. 25");
+        System.out.println(utilities.zad_25_iloscBiurWynajetychWLutym(companies));
+
+        System.out.println();
+        System.out.println("Zad. 26");
+        Map<Company, Double> zad_26 = utilities.zad_26_mapaFirmaIloscWynajetychBiur(companies);
+        zad_26.forEach((k, v) -> System.out.println(k.getName() + " - " + k.getCityHeadquarters() + " - " + v));
+
+        System.out.println();
+        System.out.println("Zad. 27");
+        utilities.zad_27_wypiszFirmyZamawiajaceTelefonyAppleOrazIlosciTychTelefonowPosortowaneMalejaco(companies);
+
+        System.out.println();
+        System.out.println("Zad. 28");
+        utilities.zad_28_wypiszFirmyMajacesiedzibeWWiecejNizJednymMiesciePosortowanePoIlosciSiedzibGdyJestIchWiecejNiz1(companies);
+
 
 // Polecenie 1:
 // Dane to Firmy oraz ich zakupy z miesiąca styczeń/luty 2018.
@@ -641,7 +668,7 @@ public class Main {
 // 19. Zwróć firmę która w styczniu kupiła najwięcej paliwa (ropy)
 // 20. Zwróć firmę której proporcja wydanych pieniędzy do ilości pracowników jest najwyższa
 // 21. Zwróć firmę która najwięcej wydaje na artykuły biurowe
-// 22. Zwróć firmy posortowane po ilości wydanych pieniędzy na paliwo (wydruk oraz mapa Map<Company, Double>
+// 22. Zwróć firmy posortowane po ilości wydanych pieniędzy na paliwo (wydruk oraz mapa Map<Company, Double>)
 // 23. Zwróć wszystkie produkty które kupione były na kilogramy
 // 24. Zwróć listę zakupów (obiektów purchase) kupionych przez firmy z Detroit w miesiącu lutym. posortuj je po kwocie.
 // 25. Zwróć ilość biur które wynajęte były w miesiącu lutym.

@@ -642,6 +642,50 @@ public class Main {
         System.out.println("Zad. 28");
         utilities.zad_28_wypiszFirmyMajacesiedzibeWWiecejNizJednymMiesciePosortowanePoIlosciSiedzibGdyJestIchWiecejNiz1(companies);
 
+        System.out.println();
+        System.out.println("Zad. 29");
+        System.out.println(utilities.zad_29_iloscKG_CukruZuzytaPrzezDetroitBakery(companies));
+
+        System.out.println();
+        System.out.println("Zad. 30");
+        utilities.zad_30_wypiszZakupyFirmySolwit(companies);
+
+        System.out.println();
+        System.out.println("Zad. 31");
+        utilities.zad_31_wypiszProduktyTanszeNiz3$(companies);
+
+        System.out.println();
+        System.out.println("Zad. 32");
+        utilities.zad_32_wypiszIleSprzedanoNajtanszegoProduktu(companies);
+
+        System.out.println();
+        System.out.println("Zad. 33");
+        utilities.zad_33_obliczIleSrednioPaliwaZuzylySamochodyFirmyTakeMeHome(companies);
+
+        System.out.println();
+        System.out.println("Zad. 35");
+        utilities.zad_35_firmaKtorawydajeNajwiecejNaPapier(companies).ifPresent(company -> System.out.println(company.getName() + " - " + company.getCityHeadquarters()));
+
+        System.out.println();
+        System.out.println("Zad. 36");
+        utilities.zad_36_produktyKupowaneWIlosciachWiekszychNiz50UnitKg(companies);
+
+        System.out.println();
+        System.out.println("Zad. 37");
+        Map<String, Double> zad_37 = utilities.zad_37_mapaNazwaFirmyIleWydalaNaKawe(companies);
+        zad_37.forEach((k, v) -> System.out.println(k + " - " + v));
+
+        System.out.println();
+        System.out.println("Zad. 38");
+        utilities.zad_38_wypiszSrednieZuzycieKawyNaPracownika(companies);
+
+        System.out.println();
+        System.out.println("Zad. 39");
+        Optional<Map.Entry<Product, Double>> opt_zad_39 = utilities.zad_39_produktONajwiekszejPopularnosci(companies);
+        if (opt_zad_39.isPresent()) {
+            Map.Entry<Product, Double> m_e = opt_zad_39.get();
+            System.out.println(m_e.getKey());
+        }
 
 // Polecenie 1:
 // Dane to Firmy oraz ich zakupy z miesiąca styczeń/luty 2018.

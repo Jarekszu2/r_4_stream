@@ -302,9 +302,9 @@ class Utilities {
                 .collect(Collectors.toMap(
                         c -> c,
                         c -> c.getPurchaseList().stream()
-                            .filter(purchase -> purchase.getProduct().getName().equals("Apple Phone"))
-                            .mapToDouble(Purchase::getQuantity)
-                            .sum()
+                                .filter(purchase -> purchase.getProduct().getName().equals("Apple Phone"))
+                                .mapToDouble(Purchase::getQuantity)
+                                .sum()
                 )).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
@@ -343,5 +343,160 @@ class Utilities {
                 System.out.println(e.getKey() + " - " + e.getValue());
             }
         }
+    }
+
+    // 29. Wypisz ilość kilogramów cukru zużywaną przez "Detroit Bakery"
+    double zad_29_iloscKG_CukruZuzytaPrzezDetroitBakery(List<Company> companies) {
+        return companies.stream()
+                .filter(company -> company.getName().equals("Detroit Bakery"))
+                .flatMap(company -> company.getPurchaseList().stream())
+                .filter(purchase -> purchase.getProduct().getName().equals("Sugar"))
+                .mapToDouble(Purchase::getQuantity).sum();
+    }
+
+    // 30. Wypisz wszystkie zakupy firmy "Solwit".
+    void zad_30_wypiszZakupyFirmySolwit(List<Company> companies) {
+        companies.stream()
+                .filter(company -> company.getName().equals("Solwit"))
+                .flatMap(company -> company.getPurchaseList().stream())
+                .forEach(System.out::println);
+    }
+
+    // 31. Wypisz wszystkie produkty które są tańsze (jednostkowo) niż 3$.
+    void zad_31_wypiszProduktyTanszeNiz3$(List<Company> companies) {
+        companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream())
+                .map(Purchase::getProduct)
+                .filter(product -> product.getPrice() < 3)
+                .collect(Collectors.toSet())
+                .forEach(System.out::println);
+    }
+
+    // 32. Wypisz ile sprzedano najtańszego produktu
+    void zad_32_wypiszIleSprzedanoNajtanszegoProduktu(List<Company> companies) {
+        Optional<Product> opt_zad_32 = companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream())
+                .map(Purchase::getProduct)
+                .min(Comparator.comparingDouble(Product::getPrice));
+
+        if (opt_zad_32.isPresent()) {
+            System.out.println(opt_zad_32.get());
+
+            double how_many =  companies.stream()
+                    .flatMap(company -> company.getPurchaseList().stream())
+                    .filter(purchase -> purchase.getProduct().equals(opt_zad_32.get()))
+                    .mapToDouble(Purchase::getQuantity).sum();
+
+//            System.out.println();
+            System.out.println(how_many);
+        }
+    }
+
+    // 33. Firma "Take me home" zajmuje się transportem. Na początku działalności kupiła wiele samochodów do użytku. Oblicz ile litrów paliwa (średnio) spalają ich samochody (zakładamy że wszystkie palą benzynę i że tankowane są wszystkie.
+    void zad_33_obliczIleSrednioPaliwaZuzylySamochodyFirmyTakeMeHome(List<Company> companies) {
+        double ileSamochodow = companies.stream()
+                .filter(company -> company.getName().startsWith("Take"))
+                .flatMap(company -> company.getPurchaseList().stream())
+                .filter(purchase -> purchase.getProduct().getName().equals("Fiat Fullback")
+                || purchase.getProduct().getName().equals("Skoda Octavia")
+                || purchase.getProduct().getName().equals("Audi A4")
+                || purchase.getProduct().getName().equals("Ford mustang")
+                || purchase.getProduct().getName().equals("Fiat Tipo"))
+                .mapToDouble(Purchase::getQuantity).sum();
+
+        System.out.println("cars: " + ileSamochodow );
+
+        double ilePaliwa = companies.stream()
+                .filter(company -> company.getName().startsWith("Take"))
+                .flatMap(company -> company.getPurchaseList().stream())
+                .filter(purchase -> purchase.getProduct().getName().equals("Fuel, gasoline 95"))
+                .mapToDouble(Purchase::getQuantity).sum();
+
+        System.out.println("gasoline: " + ilePaliwa);
+        System.out.println("average: " + ilePaliwa / ileSamochodow);
+    }
+
+    // 34. Wypisz firmę która zużywa najwięcej kawy
+    Optional<Company> zad_34_firmaKtoraZuzywaNajwiecejKawy(List<Company> companies) {
+        return companies.stream()
+                .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream()
+                .filter(purchase -> purchase.getProduct().getName().startsWith("Coff"))
+                .mapToDouble(Purchase::getQuantity).sum()));
+    }
+
+    // 35. Wypisz firmę która zużywa najwięcej na papier.
+    Optional<Company> zad_35_firmaKtorawydajeNajwiecejNaPapier(List<Company> companies) {
+        return companies.stream()
+                .max(Comparator.comparingDouble(value -> value.getPurchaseList().stream()
+                .filter(purchase -> purchase.getProduct().getName().equals("Paper"))
+                .mapToDouble(value1 -> value1.getProduct().getPrice() * value1.getQuantity())
+                .sum()));
+    }
+
+    // 36. Wypisz wszystkie produkty które były kupowane w większych ilościach niż 50 (jednostek/kilogramów)
+    void zad_36_produktyKupowaneWIlosciachWiekszychNiz50UnitKg(List<Company> companies) {
+        companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream())
+                .filter(purchase -> purchase.getQuantity() > 50)
+                .filter(purchase -> purchase.getUnit().equals(UNIT.KILOGRAM) || purchase.getUnit().equals(UNIT.UNIT))
+                .map(Purchase::getProduct)
+                .collect(Collectors.toSet())
+                .forEach(product -> System.out.println(product.getName()));
+    }
+
+    // 37. Wypisz ile każda z firm zużywa na kawę (ile pieniędzy wydaje) (jako wynik zwróć mapę Map<String, Double> gdzie kluczem jest nazwa firmy, wartością jest ilość pieniędzy wydawanej na kawę
+    Map<String, Double> zad_37_mapaNazwaFirmyIleWydalaNaKawe(List<Company> companies) {
+        Set<String> stringSet = companies.stream()
+                .map(Company::getName)
+                .collect(Collectors.toSet());
+
+        return stringSet.stream()
+                .collect(Collectors.toMap(
+                        s -> s,
+                        s -> companies.stream().filter(company -> company.getName().equals(s))
+                            .flatMap(company -> company.getPurchaseList().stream())
+                            .filter(purchase -> purchase.getProduct().getName().startsWith("Coff"))
+                            .mapToDouble(value -> value.getProduct().getPrice() * value.getQuantity())
+                            .sum()
+                ));
+    }
+
+    // 38. Wypisz średnie zużycie kawy na pracownika (wypisz w postaci proporcji. Jeśli firma kupiła 30 kilogramów i ma 20 pracowników to ma 1.5 kg / pracownika [w całości okresu])
+    void zad_38_wypiszSrednieZuzycieKawyNaPracownika(List<Company> companies) {
+                companies.stream()
+                .collect(Collectors.toMap(
+                        c -> c,
+                        c -> c.getPurchaseList().stream()
+                            .filter(purchase -> purchase.getProduct().getName().startsWith("Coff"))
+                            .mapToDouble(Purchase::getQuantity).sum() / c.getEmployees()))
+                        .forEach((k, v) -> System.out.println(k.getName() + " " + k.getCityHeadquarters() + " - " + v));
+    }
+
+    // 39. Wypisz jaki produkt poza paliwem cieszy się największą popularnością (zwróć go) (find first)
+//    największa popularność - tzn. kupiony w najwiekszej ilości
+    Optional<Map.Entry<Product, Double>> zad_39_produktONajwiekszejPopularnosci(List<Company> companies) {
+        Set<Product> products = companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream())
+                .filter(purchase -> !purchase.getProduct().getName().startsWith("Fuel"))
+                .map(Purchase::getProduct)
+                .collect(Collectors.toSet());
+
+        Map<Product, Double> map = products.stream()
+                .collect(Collectors.toMap(
+                        p -> p,
+                        p -> companies.stream()
+                            .flatMap(company -> company.getPurchaseList().stream())
+                            .filter(purchase -> purchase.getProduct().equals(p))
+                            .mapToDouble(Purchase::getQuantity)
+                            .sum()));
+
+        Map<Product, Double> sortedMap = map.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+
+        sortedMap.forEach((k, v) -> System.out.println(k.getName() + " - " + v));
+        System.out.println();
+
+        return map.entrySet().stream().min(Map.Entry.comparingByValue(Comparator.reverseOrder()));
     }
 }

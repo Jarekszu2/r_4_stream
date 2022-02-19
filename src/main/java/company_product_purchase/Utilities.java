@@ -499,4 +499,29 @@ class Utilities {
 
         return map.entrySet().stream().min(Map.Entry.comparingByValue(Comparator.reverseOrder()));
     }
+
+    // 40. Znajdź produkty które były kupowane zarówno w kilogramach jak i w sztukach
+    Set<Product> zad_40_produktyKupowaneWKgIUnitach(List<Company> companies) {
+        Set<Product> productSet = companies.stream()
+                .flatMap(company -> company.getPurchaseList().stream())
+                .map(Purchase::getProduct)
+                .collect(Collectors.toSet());
+
+        Map<Product, Set<UNIT>> map = productSet.stream()
+                .collect(Collectors.toMap(
+                        p -> p,
+                        p -> companies.stream()
+                            .flatMap(company -> company.getPurchaseList().stream())
+                            .filter(purchase -> purchase.getProduct().equals(p))
+                            .map(Purchase::getUnit)
+                            .collect(Collectors.toSet())));
+
+        Map<Product, Set<UNIT>> sortedMap = map.entrySet().stream()
+                .filter(productSetEntry -> productSetEntry.getValue().size() > 1)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new
+                ));
+
+        return sortedMap.keySet();
+    }
 }

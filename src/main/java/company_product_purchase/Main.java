@@ -687,6 +687,11 @@ public class Main {
             System.out.println(m_e.getKey());
         }
 
+        System.out.println();
+        System.out.println("Zad. 40");
+        Set<Product> zad_40 = utilities.zad_40_produktyKupowaneWKgIUnitach(companies);
+        zad_40.forEach(System.out::println);
+
 // Polecenie 1:
 // Dane to Firmy oraz ich zakupy z miesiąca styczeń/luty 2018.
 

@@ -296,9 +296,23 @@ class Utilities {
                                 .sum()));
     }
 
+    // 26.2 Jak 26 tylko kluczem jest nazwa firmy (klucz ma kilka wartości)
+    Map<String, Double> zad_26_2_mapaNazwaFirmy_iloscWynajetychBiur(List<Company> companies) {
+        return companies.stream()
+                .collect(Collectors.toMap(
+                        c -> c.getName(),
+                        c -> c.getPurchaseList().stream()
+                                .filter(purchase -> purchase.getProduct().getName().equals("Office rent"))
+                                .mapToDouble(Purchase::getQuantity)
+                                .sum(), (o, o2) -> o + o2));    // merging, gdy jakiś klucz ma kilka wartości
+                                                                // (o, o2) -> o + o2) - kryterium, co zrobić z wartościami, dany klucz ma wiecej niż jedną wartość
+    }
+
     // 27. *Wypisz "Nazwa firmy: XYZ, ilość zakupionych telefonów apple: X" dla każdej firmy która kupiła telefon apple. Wypisy powinny być posortowane (na szczycie powinna być firma która kupiła ich najwięcej).
     void zad_27_wypiszFirmyZamawiajaceTelefonyAppleOrazIlosciTychTelefonowPosortowaneMalejaco(List<Company> companies) {
         Map<Company, Double> map = companies.stream()
+                // filtr, który przepuszcza tylko firmy spełniające warunek - zakup tel. Apple
+                // .filter(company -> company.getPurchaseList().stream().anyMatch(purchase -> purchase.getProduct().getName().equals("Apple Phone"))) // na wydruku wyniku nie trzeba robić seta z warunkiem value != 0
                 .collect(Collectors.toMap(
                         c -> c,
                         c -> c.getPurchaseList().stream()

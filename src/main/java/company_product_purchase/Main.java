@@ -635,6 +635,12 @@ public class Main {
         zad_26.forEach((k, v) -> System.out.println(k.getName() + " - " + k.getCityHeadquarters() + " - " + v));
 
         System.out.println();
+        System.out.println("Zad. 26.2");
+        Map<String, Double> zad_26_2 = utilities.zad_26_2_mapaNazwaFirmy_iloscWynajetychBiur(companies);
+        zad_26_2.forEach((k, v) -> System.out.println(k + " - " + v));
+
+
+        System.out.println();
         System.out.println("Zad. 27");
         utilities.zad_27_wypiszFirmyZamawiajaceTelefonyAppleOrazIlosciTychTelefonowPosortowaneMalejaco(companies);
 

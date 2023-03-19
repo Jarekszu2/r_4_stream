@@ -649,8 +649,20 @@ public class Main {
         utilities.zad_28_wypiszFirmyMajacesiedzibeWWiecejNizJednymMiesciePosortowanePoIlosciSiedzibGdyJestIchWiecejNiz1(companies);
 
         System.out.println();
+        System.out.println("Zad. 28.2");
+        utilities.zad_28_2(companies);
+
+        System.out.println();
+        System.out.println("Zad. 28.3");
+        utilities.zad_28_3(companies);
+
+        System.out.println();
         System.out.println("Zad. 29");
         System.out.println(utilities.zad_29_iloscKG_CukruZuzytaPrzezDetroitBakery(companies));
+
+        System.out.println();
+        System.out.println("Zad. 29.2");
+        utilities.zad_29_2(companies);
 
         System.out.println();
         System.out.println("Zad. 30");

@@ -359,6 +359,46 @@ class Utilities {
         }
     }
 
+    // 28.2
+    void zad_28_2(List<Company> companies) {
+        Map<String, List<String>> mapNameListOfHeadquaters = companies
+                .stream()
+                .collect(Collectors.groupingBy( // jak klucz ma wiele wartości
+                        c -> c.getName(),
+                        Collectors.mapping(c -> c.getCityHeadquarters(), Collectors.toList())))  // mapping - podajemy jak zmapować obiekt (map + collect) - do danego klucza co nas interesuje
+                // sortujemy
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.comparingInt(value -> value.size())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+
+        mapNameListOfHeadquaters.entrySet()
+                .stream()
+                .filter(stringListEntry -> stringListEntry.getValue().size() > 1)
+                .forEach(stringListEntry -> System.out.println(stringListEntry.getKey() + " " + stringListEntry.getValue().size()));
+    }
+
+    // 28.3
+    void zad_28_3(List<Company> companies) {
+        Map<String, Long> mapNameNumberOfHeadquarters = companies
+                .stream()
+                .collect(Collectors.toMap(
+                        c -> c.getName(),
+                        c -> companies
+                                .stream()
+                                .filter(company -> company.getName().equalsIgnoreCase(c.getName()))
+                                .map(Company::getCityHeadquarters).count(),
+                        (o, o2) -> o
+                ));
+
+        mapNameNumberOfHeadquarters.entrySet()
+                .stream()
+                .filter(stringLongEntry -> stringLongEntry.getValue() > 1)
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEach(stringLongEntry -> System.out.println(stringLongEntry.getKey() + " " + stringLongEntry.getValue()));
+
+    }
+
     // 29. Wypisz ilość kilogramów cukru zużywaną przez "Detroit Bakery"
     double zad_29_iloscKG_CukruZuzytaPrzezDetroitBakery(List<Company> companies) {
         return companies.stream()
@@ -366,6 +406,21 @@ class Utilities {
                 .flatMap(company -> company.getPurchaseList().stream())
                 .filter(purchase -> purchase.getProduct().getName().equals("Sugar"))
                 .mapToDouble(Purchase::getQuantity).sum();
+    }
+
+    // 29.2
+    void zad_29_2(List<Company> companies) {
+        double sum = companies
+                .stream()
+                .filter(company -> company.getName().equals("Detroit Bakery"))
+                .mapToDouble(value -> value.getPurchaseList()
+                    .stream()
+                    .filter(purchase -> purchase.getProduct().getName().equals("Sugar"))
+                    .mapToDouble(Purchase::getQuantity)
+                    .sum())
+                .sum();
+
+        System.out.println("Sum: " + sum);
     }
 
     // 30. Wypisz wszystkie zakupy firmy "Solwit".
